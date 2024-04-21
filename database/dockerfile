@@ -1,0 +1,14 @@
+# Use the official MongoDB image from Docker Hub
+FROM mongo:6.0.15-rc0
+
+# Set the working directory in the container
+WORKDIR /usr/src/configs
+
+# Copy the configuration file into the Docker image
+# COPY mongo.conf .
+
+# Expose ports (27017 is the default MongoDB port)
+EXPOSE 27017
+
+# Start MongoDB when the container is run, using the configuration file
+# CMD ["mongod", "--config", "./mongo.conf"]

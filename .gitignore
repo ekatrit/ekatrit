@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
@@ -8,10 +7,12 @@
 **bazel-out
 
 # Node
-**node_modules
+**node_modules**
 **npm-debug.log
 **yarn-error.log
-
+# Node modules
+server/node_modules/
+ui/node_modules/
 # IDEs and editors
 **.idea/
 **.project
@@ -30,7 +31,9 @@
 .history/*
 
 # Miscellaneous
-**.angular/cache
+**angular\cache**
+ui/.angular/cache/
+ui/.angular/cache/**
 **.sass-cache/
 **connect.lock
 **coverage
@@ -41,21 +44,3 @@
 # System files
 **.DS_Store
 **Thumbs.db
-=======
-### Hi there 👋
-
-<!--
-**ekatrit/ekatrit** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
->>>>>>> 3d89a774a50a59b59d04c4a610c9f03634da69ab
