@@ -4,7 +4,7 @@ const constants = require('../common/constant'); // assuming the constants file 
 
 
 async function saveUser(user) {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const hashedPassword = await bcrypt.hash(user.password, 10);
 
     const newUser = new User({
         name: user.name,
