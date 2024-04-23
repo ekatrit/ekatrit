@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WorkspaceDialogComponent } from '../workspace-dialog/workspace-dialog.component';
 import { ProjectDialogComponent } from '../project-dialog/project-dialog.component';
+import { DashboardService } from './dashboard.service';
 
 @Component({
   selector: 'app-overview',
@@ -9,23 +10,43 @@ import { ProjectDialogComponent } from '../project-dialog/project-dialog.compone
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
-  constructor(public dialog: MatDialog) { }
-  workspaces: any = [{ name: 'result' }];
-  projects: any = [];
-  selectedWSName = '';
+  constructor(public dialog: MatDialog, private dashboardService: DashboardService) { }
+
+  ngOnInit() {
+    this.dashboardService.getAllWorkspace()
+      .subscribe({
+        next: (response: any) => {
+          this.workspaces = response.workspace;
+        },
+        error: (error) => {
+          // handle login error
+        }
+      });
+    // this.selectedWorkspace({ projects: [{ name: 'Project 1' }, { name: 'Project 2' }] });
+  }
+
+  workspaces: any;
+  projects: any;
+  selectedWorkspace = { workspaceId: '', workspaceName: '' };
   openDialog(): void {
     const dialogRef = this.dialog.open(WorkspaceDialogComponent, {
       width: '250px',
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      console.log('The dialog was closed' + result);
       if (result.length > 0) {
-        let newWs = { name: result };
-        this.workspaces.push(newWs);
+        this.dashboardService.saveWorkspace({ workspaceName: result })
+          .subscribe({
+            next: (response: any) => {
+              debugger
+              this.workspaces = response.workspace;
+
+            },
+            error: (error) => {
+              // handle login error
+            }
+          });
       }
-
-
     });
   }
   openProjDialog(): void {
@@ -34,22 +55,27 @@ export class OverviewComponent {
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
-      console.log('The dialog was closed' + result);
       if (result.length > 0) {
-        let newWs = { name: result };
-        this.projects.push(newWs);
+        this.dashboardService.saveProject({ projectName: result, workspaceId: this.selectedWorkspace.workspaceId })
+          .subscribe({
+            next: (response) => {
+              debugger
+              let newPj = { name: result };
+              this.projects.push(newPj);
+            },
+            error: (error) => {
+              // handle login error
+            }
+          });
       }
 
 
     });
   }
-  selectedWorkspace(workspace: any) {
+  selectWorkspace(workspace: any) {
     // this.projects = workspace.projects;
-    this.selectedWSName = workspace.name;
+    this.selectedWorkspace = { workspaceId: workspace.workspaceId, workspaceName: workspace.workspaceName };
     this.projects = [{ name: 'Project 1' }, { name: 'Project 2' }];
 
-  }
-  ngOnInit() {
-    this.selectedWorkspace({ projects: [{ name: 'Project 1' }, { name: 'Project 2' }] });
   }
 }

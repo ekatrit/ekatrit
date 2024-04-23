@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  validAuth = false;
+  validAuth = this.loginService.validateToken();
   constructor(private loginService: LoginPageService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {

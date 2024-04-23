@@ -3,8 +3,8 @@
   <div class="w-1/6 text-black p-4" style="border-right: 1px solid black;">
     <h2 class="font-bold mb-4">Workspace</h2>
     <ul style="cursor: pointer;">
-      <li *ngFor="let workspace of workspaces" style="padding-bottom: 8px;" (click)="selectedWorkspace(workspace)">
-        {{ workspace.name }}
+      <li *ngFor="let workspace of workspaces" style="padding-bottom: 8px;" (click)="selectWorkspace(workspace)">
+        {{ workspace.workspaceName }}
       </li>
       <li (click)="openDialog()" style="cursor: pointer;">Create Workspace</li>
     </ul>
@@ -25,7 +25,7 @@
       
       <div *ngIf="projects.length > 0" class="flex justify-left">
         <div class="mt-4">
-          <h2 class="font-bold mb-4">{{selectedWSName}}</h2>
+          <h2 class="font-bold mb-4">{{selectedWorkspace.workspaceName}}</h2>
           <div class="grid grid-cols-5 gap-4">
             <div *ngFor="let project of projects; let i = index">
               <div class="project-{{ i % 5 }} rounded-lg shadow-md p-12">

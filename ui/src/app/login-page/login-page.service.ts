@@ -17,6 +17,7 @@ export class LoginPageService {
     return this.http.post(this.baseUrl + '/api/v1/login', { email: username, password: password })
       .pipe(tap((response: any) => {
         if (response && response.token) {
+          debugger
           localStorage.setItem('token', response.token);
           this.loginStatusChanged.emit(true);
         }
@@ -39,7 +40,9 @@ export class LoginPageService {
       return false
     }
   }
-
+  getToken() {
+    return localStorage.getItem('token');
+  }
 
   signIn(username: string, password: string) {
     return this.http.post(this.baseUrl + '/api/v1/signup', { email: username, password: password });

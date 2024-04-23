@@ -1,24 +1,27 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const userService = require('../services/userService');
+const { generateToken } = require('../services/authService');
 
 const router = express.Router();
 
 router.post('/api/v1/login', async (req, res) => {
+    console.log("userDetails1" + JSON.stringify(req.body));
     let user = {
         email: req.body.email,
         password: req.body.password
-    }
+    };
     try {
-        let userDetails = await userService.findUser(user);
+let userDetails = await userService.findUser(user);
         if (userDetails) {
             // Generate a JWT with the user's ID as the payload
-            const token = jwt.sign({ id: userDetails._id }, 'your-secret-key');
+            console.log("userDetails" + JSON.stringify(userDetails));
+            const token = generateToken(userDetails);
             res.status(200).send({ token });
         } else {
             res.status(401).send({ msg: 'Invalid credentials' });
         }
     } catch (error) {
+        console.log('Error:', error);
         res.status(401).send({ msg: 'Invalid credentials' });
     }
 });

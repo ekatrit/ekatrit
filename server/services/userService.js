@@ -12,17 +12,17 @@ async function saveUser(user) {
         password: hashedPassword,
     });
 
-    newUser.save()
-        .then(() => console.log('User created'))
-        .catch((err) => console.error(err));
+    await newUser.save();
 }
 async function findUser(user) {
+    console.log('foundUser1', user);
     const foundUser = await User.findOne({ email: user.email });
+    console.log('foundUser', foundUser);
     if (foundUser) {
         const isPasswordValid = await bcrypt.compare(user.password, foundUser.password);
         if (isPasswordValid) {
             console.log('Password is valid');
-            return { email: foundUser.email, name: foundUser.name, userId: foundUser.userId };
+            return foundUser;
         } else {
             console.log('Password is invalid');
             throw new Error(constants.PASSWORD_INVALID);
