@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginPageService } from './login-page.service';
 
 @Component({
   selector: 'app-login-page',
@@ -8,17 +9,42 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-page.component.css']
 })
 export class loginPageComponent {
-  loginForm = this.fb.group({
+  loginForm: any = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
 
-  constructor(private fb: FormBuilder, private router: Router) { }
+  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginPageService) { }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      // handle successful form submission
-      this.router.navigate(['/overview']);
+      this.loginService.login(this.loginForm.value.email, this.loginForm.value.password)
+        .subscribe({
+          next: (response) => {
+            // handle successful login
+            this.router.navigate(['/dashboard']);
+          },
+          error: (error) => {
+            // handle login error
+          }
+        });
+
+    } else {
+      // handle form validation errors
+    }
+  }
+  onSignIn() {
+    if (this.loginForm.valid) {
+      this.loginService.signIn(this.loginForm.value.email, this.loginForm.value.password)
+        .subscribe({
+          next: (response) => {
+            // handle successful login
+            this.router.navigate(['/overview']);
+          },
+          error: (error) => {
+            // handle login error
+          }
+        });
 
     } else {
       // handle form validation errors

@@ -27,8 +27,8 @@
         <div class="mt-4">
           <h2 class="font-bold mb-4">{{selectedWSName}}</h2>
           <div class="grid grid-cols-5 gap-4">
-            <div *ngFor="let project of projects">
-              <div class="bg-white rounded-lg shadow-md p-12">
+            <div *ngFor="let project of projects; let i = index">
+              <div class="project-{{ i % 5 }} rounded-lg shadow-md p-12">
                 <h3 class="font-bold">{{ project.name }}</h3>
                 <p>{{ project.description }}</p>
               </div>

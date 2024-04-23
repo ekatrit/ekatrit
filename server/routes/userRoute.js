@@ -9,12 +9,16 @@ router.post('/api/v1/login', async (req, res) => {
         email: req.body.email,
         password: req.body.password
     }
-    let userDetails = await userService.findUser(user);
-    if (userDetails) {
-        // Generate a JWT with the user's ID as the payload
-        const token = jwt.sign({ id: userDetails._id }, 'your-secret-key');
-        res.status(200).send({ token });
-    } else {
+    try {
+        let userDetails = await userService.findUser(user);
+        if (userDetails) {
+            // Generate a JWT with the user's ID as the payload
+            const token = jwt.sign({ id: userDetails._id }, 'your-secret-key');
+            res.status(200).send({ token });
+        } else {
+            res.status(401).send({ msg: 'Invalid credentials' });
+        }
+    } catch (error) {
         res.status(401).send({ msg: 'Invalid credentials' });
     }
 });
