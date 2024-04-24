@@ -7,7 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./project-dialog.component.css']
 })
 export class ProjectDialogComponent {
-  projectName = '';
+  projectName: any;
 
   constructor(
     public dialogRef: MatDialogRef<ProjectDialogComponent>) { }

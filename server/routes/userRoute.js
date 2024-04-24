@@ -5,13 +5,12 @@ const { generateToken } = require('../services/authService');
 const router = express.Router();
 
 router.post('/api/v1/login', async (req, res) => {
-    console.log("userDetails1" + JSON.stringify(req.body));
-    let user = {
-        email: req.body.email,
-        password: req.body.password
-    };
     try {
-let userDetails = await userService.findUser(user);
+        let user = {
+            email: req.body.email,
+            password: req.body.password
+        };
+        let userDetails = await userService.findUser(user);
         if (userDetails) {
             // Generate a JWT with the user's ID as the payload
             console.log("userDetails" + JSON.stringify(userDetails));
@@ -27,13 +26,17 @@ let userDetails = await userService.findUser(user);
 });
 
 router.post('/api/v1/signup', async (req, res) => {
-    let user = {
-        userName: req.body.name,
-        email: req.body.email,
-        password: req.body.password
+    try {
+        let user = {
+            userName: req.body.name,
+            email: req.body.email,
+            password: req.body.password
+        }
+        await userService.saveUser(user);
+        res.status(201).send({ msg: 'User created' });
+    } catch (error) {
+        console.log('Error:', error);
     }
-    await userService.saveUser(user);
-    res.status(201).send({ msg: 'User created' });
 });
 
 

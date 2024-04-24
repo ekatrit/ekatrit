@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { WorkspaceDialogComponent } from '../workspace-dialog/workspace-dialog.component';
 import { ProjectDialogComponent } from '../project-dialog/project-dialog.component';
 import { DashboardService } from './dashboard.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-overview',
@@ -10,19 +11,20 @@ import { DashboardService } from './dashboard.service';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
-  constructor(public dialog: MatDialog, private dashboardService: DashboardService) { }
+  constructor(public dialog: MatDialog, private dashboardService: DashboardService, private router: Router) { }
 
   ngOnInit() {
     this.dashboardService.getAllWorkspace()
       .subscribe({
         next: (response: any) => {
           this.workspaces = response.workspace;
+          this.selectWorkspace(this.workspaces[0]);
         },
         error: (error) => {
           // handle login error
         }
       });
-    // this.selectedWorkspace({ projects: [{ name: 'Project 1' }, { name: 'Project 2' }] });
+
   }
 
   workspaces: any;
@@ -38,7 +40,6 @@ export class OverviewComponent {
         this.dashboardService.saveWorkspace({ workspaceName: result })
           .subscribe({
             next: (response: any) => {
-              debugger
               this.workspaces = response.workspace;
 
             },
@@ -58,10 +59,9 @@ export class OverviewComponent {
       if (result.length > 0) {
         this.dashboardService.saveProject({ projectName: result, workspaceId: this.selectedWorkspace.workspaceId })
           .subscribe({
-            next: (response) => {
-              debugger
-              let newPj = { name: result };
-              this.projects.push(newPj);
+            next: (response: any) => {
+              this.projects = response.project;
+
             },
             error: (error) => {
               // handle login error
@@ -75,7 +75,21 @@ export class OverviewComponent {
   selectWorkspace(workspace: any) {
     // this.projects = workspace.projects;
     this.selectedWorkspace = { workspaceId: workspace.workspaceId, workspaceName: workspace.workspaceName };
-    this.projects = [{ name: 'Project 1' }, { name: 'Project 2' }];
+    this.dashboardService.getProjectByWorkspaceId(workspace.workspaceId)
+      .subscribe({
+        next: (response: any) => {
+          this.projects = response.project;
 
+        },
+        error: (error) => {
+          // handle login error
+        }
+      });
+
+  }
+  
+  navigateToProject(projectId: string) {
+    debugger
+    this.router.navigate(['/project'], { state: { id: projectId } });
   }
 }
