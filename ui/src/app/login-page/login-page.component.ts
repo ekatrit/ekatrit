@@ -13,7 +13,8 @@ export class loginPageComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
-
+  displayLogin= true;
+  displaySignIn= false;
   constructor(private fb: FormBuilder, private router: Router, private loginService: LoginPageService) { }
 
   onSubmit() {
